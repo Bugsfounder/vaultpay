@@ -737,7 +737,7 @@ export default function AdminDashboard() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                   {items.map((item, index) => (
                     <div key={index} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-end" }}>
-                      <div style={{ flex: 3 }} className="form-group" style={{ margin: 0 }}>
+                      <div className="form-group" style={{ flex: 3, margin: 0 }}>
                         <input
                           type="text"
                           placeholder="Audit description / consultation scope"
@@ -746,7 +746,7 @@ export default function AdminDashboard() {
                           onChange={(e) => handleItemChange(index, "description", e.target.value)}
                         />
                       </div>
-                      <div style={{ width: "80px" }} className="form-group" style={{ margin: 0 }}>
+                      <div className="form-group" style={{ width: "80px", margin: 0 }}>
                         <input
                           type="number"
                           placeholder="Qty"
@@ -756,7 +756,7 @@ export default function AdminDashboard() {
                           onChange={(e) => handleItemChange(index, "quantity", e.target.value)}
                         />
                       </div>
-                      <div style={{ width: "120px" }} className="form-group" style={{ margin: 0 }}>
+                      <div className="form-group" style={{ width: "120px", margin: 0 }}>
                         <input
                           type="number"
                           placeholder="Rate ($)"
