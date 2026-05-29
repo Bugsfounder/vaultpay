@@ -3,21 +3,18 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  Building, LogOut, Plus, DollarSign, Calendar, Clock, 
-  ArrowRight, Shield, Loader, CheckCircle, Search, AlertTriangle 
-} from "@/components/Icons";
+
 import { Invoice, ClientProfile } from "@/lib/mockDb";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const router = useRouter();
-  
+
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [clients, setClients] = useState<ClientProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   // Filtering & Search
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | "Paid" | "Pending" | "Overdue">("All");
@@ -52,7 +49,7 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       setError("");
-      
+
       // Fetch Invoices
       const invRes = await fetch("/api/invoices", {
         headers: {
@@ -153,7 +150,7 @@ export default function AdminDashboard() {
       setModalError("Please enter a valid client billing email.");
       return;
     }
-    
+
     // Validate Items
     const invalidItems = items.some((item) => !item.description || item.quantity <= 0 || item.rate <= 0);
     if (invalidItems) {
@@ -189,7 +186,7 @@ export default function AdminDashboard() {
 
       // Refresh invoices
       await fetchDashboardData();
-      
+
       // Close Modal and Reset fields
       setIsModalOpen(false);
       setSelectedClientId("");
@@ -211,13 +208,13 @@ export default function AdminDashboard() {
 
   // Filter and search invoices
   const filteredInvoices = invoices.filter((inv) => {
-    const matchesSearch = 
-      inv.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch =
+      inv.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       inv.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       inv.clientEmail.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
     const matchesStatus = statusFilter === "All" ? true : inv.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -245,24 +242,9 @@ export default function AdminDashboard() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                background: "var(--color-primary)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#ffffff",
-                boxShadow: "0 0 15px var(--color-primary-glow)",
-              }}
-            >
-              <Shield size={18} />
-            </div>
             <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 600 }}>Nexus VaultPay</h2>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.05em" }}>
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 600, color: "white" }}>Nexus VaultPay</h2>
+              <span style={{ fontSize: "0.75rem", letterSpacing: "0.05em", color: "white" }}>
                 FINANCIAL CORE CLIENT PORTAL
               </span>
             </div>
@@ -274,10 +256,11 @@ export default function AdminDashboard() {
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                background: "rgba(255, 255, 255, 0.03)",
+                background: "rgba(0, 0, 0, 0.03)",
                 border: "1px solid var(--border-card)",
                 padding: "0.4rem 0.8rem",
                 borderRadius: "20px",
+                color: "white"
               }}
             >
               <div
@@ -299,7 +282,6 @@ export default function AdminDashboard() {
               className="btn btn-secondary"
               style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", borderRadius: "20px", gap: "0.4rem" }}
             >
-              <LogOut size={14} />
               <span>Disconnect</span>
             </button>
           </div>
@@ -329,7 +311,6 @@ export default function AdminDashboard() {
             className="btn btn-primary"
             style={{ borderRadius: "8px", gap: "0.5rem" }}
           >
-            <Plus size={18} />
             <span>Generate Invoice</span>
           </button>
         </div>
@@ -345,7 +326,6 @@ export default function AdminDashboard() {
         >
           <div className="glass-card" style={{ position: "relative", overflow: "hidden" }}>
             <div style={{ color: "var(--color-success)", marginBottom: "0.75rem" }}>
-              <DollarSign size={24} />
             </div>
             <p style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-muted)" }}>
               Total Revenue (Collected)
@@ -360,7 +340,6 @@ export default function AdminDashboard() {
 
           <div className="glass-card">
             <div style={{ color: "var(--color-pending)", marginBottom: "0.75rem" }}>
-              <Clock size={24} />
             </div>
             <p style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-muted)" }}>
               Outstanding Balance
@@ -375,7 +354,6 @@ export default function AdminDashboard() {
 
           <div className="glass-card">
             <div style={{ color: "#8b5cf6", marginBottom: "0.75rem" }}>
-              <CheckCircle size={24} />
             </div>
             <p style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-muted)" }}>
               Accounts Receivable Rate
@@ -387,7 +365,7 @@ export default function AdminDashboard() {
               style={{
                 width: "100%",
                 height: "6px",
-                background: "rgba(255, 255, 255, 0.05)",
+                background: "rgba(0, 0, 0, 0.05)",
                 borderRadius: "3px",
                 marginTop: "0.5rem",
                 overflow: "hidden",
@@ -413,14 +391,10 @@ export default function AdminDashboard() {
               background: "var(--color-danger-bg)",
               border: "1px solid var(--color-danger-border)",
               borderRadius: "8px",
-              color: "#f87171",
+              color: "var(--color-danger)",
               marginBottom: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
             }}
           >
-            <AlertTriangle size={20} />
             <span>{error}</span>
           </div>
         )}
@@ -443,7 +417,7 @@ export default function AdminDashboard() {
               display: "flex",
               alignItems: "center",
               gap: "0.75rem",
-              background: "rgba(0, 0, 0, 0.2)",
+              background: "#ffffff",
               border: "1px solid var(--border-card)",
               borderRadius: "8px",
               padding: "0.4rem 0.8rem",
@@ -452,7 +426,7 @@ export default function AdminDashboard() {
               maxWidth: "360px",
             }}
           >
-            <Search size={18} style={{ color: "var(--text-muted)" }} />
+
             <input
               type="text"
               placeholder="Search by invoice ID, client name..."
@@ -480,7 +454,7 @@ export default function AdminDashboard() {
                   fontSize: "0.85rem",
                   borderRadius: "6px",
                   boxShadow: statusFilter === filter ? "0 2px 8px var(--color-primary-glow)" : "none",
-                  border: statusFilter === filter ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
+                  border: statusFilter === filter ? "none" : "1px solid var(--border-card)",
                 }}
               >
                 {filter}
@@ -492,7 +466,6 @@ export default function AdminDashboard() {
         {/* Ledger Table */}
         {loading ? (
           <div style={{ textAlign: "center", padding: "4rem 0" }}>
-            <Loader className="animate-spin text-primary" size={32} style={{ margin: "0 auto 1rem auto" }} />
             <p>Decrypting secure ledger records...</p>
           </div>
         ) : filteredInvoices.length === 0 ? (
@@ -505,7 +478,7 @@ export default function AdminDashboard() {
               borderColor: "var(--border-card)",
             }}
           >
-            <Building size={40} style={{ color: "var(--text-muted)", marginBottom: "1rem", opacity: 0.5 }} />
+
             <h3>No invoice records found</h3>
             <p style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
               Try broadening your filters or create a new invoice to get started.
@@ -546,13 +519,12 @@ export default function AdminDashboard() {
                     </td>
                     <td>
                       <span
-                        className={`badge ${
-                          inv.status === "Paid"
-                            ? "badge-paid"
-                            : inv.status === "Pending"
+                        className={`badge ${inv.status === "Paid"
+                          ? "badge-paid"
+                          : inv.status === "Pending"
                             ? "badge-pending"
                             : "badge-overdue"
-                        }`}
+                          }`}
                       >
                         {inv.status}
                       </span>
@@ -569,7 +541,6 @@ export default function AdminDashboard() {
                         }}
                       >
                         <span>Details</span>
-                        <ArrowRight size={12} />
                       </button>
                     </td>
                   </tr>
@@ -603,8 +574,7 @@ export default function AdminDashboard() {
               maxHeight: "90vh",
               overflowY: "auto",
               padding: "2.5rem",
-              background: "#0d0d12",
-              borderColor: "rgba(124, 58, 237, 0.2)",
+              borderColor: "var(--border-card)",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem" }}>
@@ -628,15 +598,11 @@ export default function AdminDashboard() {
                   background: "var(--color-danger-bg)",
                   border: "1px solid var(--color-danger-border)",
                   borderRadius: "8px",
-                  color: "#f87171",
+                  color: "var(--color-danger)",
                   fontSize: "0.85rem",
                   marginBottom: "1.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
                 }}
               >
-                <AlertTriangle size={16} />
                 <span>{modalError}</span>
               </div>
             )}
@@ -729,7 +695,6 @@ export default function AdminDashboard() {
                     className="btn btn-secondary"
                     style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem", borderRadius: "4px", gap: "0.25rem" }}
                   >
-                    <Plus size={12} />
                     <span>Line Item</span>
                   </button>
                 </div>
@@ -775,7 +740,7 @@ export default function AdminDashboard() {
                         style={{
                           padding: "0.75rem",
                           border: "1px solid var(--color-danger-border)",
-                          color: "#ef4444",
+                          color: "var(--color-danger)",
                           background: "transparent",
                           height: "44px",
                           width: "44px",
@@ -816,15 +781,9 @@ export default function AdminDashboard() {
                   style={{ gap: "0.5rem" }}
                 >
                   {modalLoading ? (
-                    <>
-                      <Loader className="animate-spin" size={16} />
-                      <span>Writing to Ledger...</span>
-                    </>
+                    <span>Writing to Ledger...</span>
                   ) : (
-                    <>
-                      <CheckCircle size={16} />
-                      <span>Release Invoice</span>
-                    </>
+                    <span>Release Invoice</span>
                   )}
                 </button>
               </div>

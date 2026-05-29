@@ -15,6 +15,80 @@
   ],
   "invoices": [
     {
+      "id": "INV-3701",
+      "clientName": "Acme Corporation",
+      "clientEmail": "billing@acme.com",
+      "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
+      "amount": 150,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Consulting Fees",
+          "quantity": 1,
+          "rate": 150
+        }
+      ],
+      "status": "Pending"
+    },
+    {
+      "id": "INV-8539",
+      "clientName": "Acme Corporation",
+      "clientEmail": "billing@acme.com",
+      "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
+      "amount": 10000,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Security Risk Assessment Phase 3",
+          "quantity": 2,
+          "rate": 5000
+        }
+      ],
+      "status": "Paid",
+      "paidAt": "2026-05-29T04:21:30.760Z",
+      "stripePaymentIntentId": "pi_mock_80252g4y2h6"
+    },
+    {
+      "id": "INV-9604",
+      "clientName": "Manisha Kumari",
+      "clientEmail": "manishakumari200307@gmail.com",
+      "clientAddress": "Uttrakhand",
+      "amount": 10,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Pay till 28 may",
+          "quantity": 1,
+          "rate": 10
+        }
+      ],
+      "status": "Pending"
+    },
+    {
+      "id": "INV-1894",
+      "clientName": "Acme Corporation",
+      "clientEmail": "billing@acme.com",
+      "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
+      "amount": 20,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "12 batteries",
+          "quantity": 2,
+          "rate": 10
+        }
+      ],
+      "status": "Pending"
+    },
+    {
       "id": "INV-4535",
       "clientName": "Acme Corporation",
       "clientEmail": "billing@acme.com",

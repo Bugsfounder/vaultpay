@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { AlertTriangle, Shield, ArrowLeft } from "@/components/Icons";
+
 
 export default function AccessDeniedPage() {
   const router = useRouter();
@@ -50,26 +50,10 @@ export default function AccessDeniedPage() {
           padding: "3rem 2.5rem",
           borderColor: "rgba(239, 68, 68, 0.3)",
           boxShadow: "0 10px 40px rgba(239, 68, 68, 0.1)",
-          background: "rgba(15, 10, 10, 0.8)",
           zIndex: 1,
         }}
       >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "64px",
-            height: "64px",
-            borderRadius: "50%",
-            background: "rgba(239, 68, 68, 0.1)",
-            border: "1px solid rgba(239, 68, 68, 0.3)",
-            color: "#ef4444",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <Shield size={32} />
-        </div>
+
 
         <h1 style={{ fontSize: "1.75rem", marginBottom: "1rem", color: "#ef4444" }}>
           403: Security Exception
@@ -83,15 +67,15 @@ export default function AccessDeniedPage() {
 
         <div
           style={{
-            background: "rgba(0, 0, 0, 0.3)",
-            border: "1px solid rgba(255, 255, 255, 0.05)",
+            background: "rgba(239, 68, 68, 0.05)",
+            border: "1px solid rgba(239, 68, 68, 0.1)",
             borderRadius: "6px",
             padding: "1rem",
             marginBottom: "2rem",
             fontFamily: "var(--font-mono)",
             fontSize: "0.8rem",
             textAlign: "left",
-            color: "#ef4444",
+            color: "#dc2626",
           }}
         >
           <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.25rem" }}>
@@ -124,13 +108,12 @@ export default function AccessDeniedPage() {
             gap: "0.5rem",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+            e.currentTarget.style.background = "rgba(0, 0, 0, 0.05)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = "transparent";
           }}
         >
-          <ArrowLeft size={16} />
           <span>Return to Secured Domain</span>
         </button>
       </div>

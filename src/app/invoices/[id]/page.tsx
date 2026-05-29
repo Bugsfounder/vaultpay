@@ -3,10 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  Building, ArrowLeft, Download, CreditCard, Lock, Loader, 
-  AlertTriangle, CheckCircle, Shield 
-} from "@/components/Icons";
+
 import { CheckoutModal } from "@/components/CheckoutModal";
 import { Confetti } from "@/components/Confetti";
 import { Invoice } from "@/lib/mockDb";
@@ -65,33 +62,8 @@ export default function InvoiceDetailPage(props: Props) {
     fetchInvoice();
   }, [user, id]);
 
-  const handleDownloadPDF = async () => {
-    if (!user || !invoice) return;
-    setIsDownloading(true);
-    try {
-      const res = await fetch(`/api/invoices/${invoice.id}/pdf`, {
-        headers: {
-          "x-user-role": user.role,
-          "x-user-email": user.email,
-        },
-      });
-
-      if (!res.ok) throw new Error("Could not construct PDF from ledger");
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `nexus_invoice_${invoice.id.toLowerCase()}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err: any) {
-      alert(err.message || "Error generating document vault file.");
-    } finally {
-      setIsDownloading(false);
-    }
+  const handleDownloadPDF = () => {
+    window.print();
   };
 
   const handlePaymentSuccess = () => {
@@ -113,7 +85,6 @@ export default function InvoiceDetailPage(props: Props) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
         <div style={{ textAlign: "center" }}>
-          <Loader className="animate-spin text-primary" size={32} style={{ marginBottom: "1rem" }} />
           <p>Decrypting invoice file...</p>
         </div>
       </div>
@@ -124,7 +95,6 @@ export default function InvoiceDetailPage(props: Props) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", padding: "1.5rem" }}>
         <div className="glass-card" style={{ maxWidth: "480px", width: "100%", textAlign: "center", padding: "2.5rem" }}>
-          <AlertTriangle size={40} style={{ color: "#ef4444", marginBottom: "1rem" }} />
           <h2>Invoice Access Violation</h2>
           <p style={{ margin: "0.5rem 0 1.5rem 0" }}>{error || "Invoice record not found."}</p>
           <button onClick={handleBack} className="btn btn-secondary" style={{ width: "100%" }}>
@@ -144,6 +114,7 @@ export default function InvoiceDetailPage(props: Props) {
       <div style={{ maxWidth: "840px", margin: "0 auto" }}>
         {/* Navigation back and quick actions */}
         <div
+          className="no-print"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -156,7 +127,6 @@ export default function InvoiceDetailPage(props: Props) {
             className="btn btn-secondary"
             style={{ borderRadius: "8px", padding: "0.5rem 1rem", gap: "0.4rem" }}
           >
-            <ArrowLeft size={16} />
             <span>Dashboard</span>
           </button>
 
@@ -167,11 +137,6 @@ export default function InvoiceDetailPage(props: Props) {
               className="btn btn-secondary"
               style={{ gap: "0.4rem" }}
             >
-              {isDownloading ? (
-                <Loader className="animate-spin" size={16} />
-              ) : (
-                <Download size={16} />
-              )}
               <span>Download PDF</span>
             </button>
 
@@ -181,7 +146,6 @@ export default function InvoiceDetailPage(props: Props) {
                 className="btn btn-primary"
                 style={{ background: "#10b981", boxShadow: "0 4px 14px rgba(16, 185, 129, 0.2)", gap: "0.4rem" }}
               >
-                <CreditCard size={16} />
                 <span>Pay Invoice</span>
               </button>
             )}
@@ -194,9 +158,7 @@ export default function InvoiceDetailPage(props: Props) {
           style={{
             padding: "3.5rem",
             position: "relative",
-            background: "#0d0d12",
-            borderColor: "rgba(255,255,255,0.05)",
-            boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
+            borderColor: "var(--border-card)",
             overflow: "hidden",
           }}
         >
@@ -230,7 +192,6 @@ export default function InvoiceDetailPage(props: Props) {
           >
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-                <Shield size={22} style={{ color: "#8b5cf6" }} />
                 <h3 style={{ fontSize: "1.25rem", fontWeight: 700, letterSpacing: "-0.01em" }}>
                   NEXUS CORPORATE SERVICES
                 </h3>
@@ -370,7 +331,7 @@ export default function InvoiceDetailPage(props: Props) {
           <div style={{ border: "1px solid var(--border-card)", borderRadius: "8px", overflow: "hidden", marginBottom: "2rem" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.9rem" }}>
               <thead>
-                <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border-card)" }}>
+                <tr style={{ background: "rgba(0,0,0,0.02)", borderBottom: "1px solid var(--border-card)" }}>
                   <th style={{ padding: "0.75rem 1rem", fontWeight: 500, color: "var(--text-muted)", fontSize: "0.8rem", textTransform: "uppercase" }}>
                     Service Charge Breakdown
                   </th>
@@ -427,7 +388,7 @@ export default function InvoiceDetailPage(props: Props) {
                 }}
               >
                 <strong style={{ fontSize: "1rem" }}>Total Invoiced:</strong>
-                <strong style={{ fontSize: "1.1rem", color: "#8b5cf6" }}>
+                <strong style={{ fontSize: "1.1rem", color: "var(--color-primary)" }}>
                   ${invoice.amount.toLocaleString()} USD
                 </strong>
               </div>

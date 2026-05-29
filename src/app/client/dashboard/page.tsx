@@ -3,10 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  Building, LogOut, DollarSign, Calendar, Clock, 
-  ArrowRight, Shield, Loader, Search, AlertTriangle 
-} from "@/components/Icons";
+
 import { Invoice } from "@/lib/mockDb";
 
 export default function ClientDashboard() {
@@ -95,21 +92,6 @@ export default function ClientDashboard() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                background: "#10b981",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#ffffff",
-                boxShadow: "0 0 15px rgba(16, 185, 129, 0.2)",
-              }}
-            >
-              <Building size={18} />
-            </div>
             <div>
               <h2 style={{ fontSize: "1.1rem", fontWeight: 600 }}>Nexus VaultPay</h2>
               <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.05em" }}>
@@ -124,7 +106,7 @@ export default function ClientDashboard() {
                 display: "flex",
                 alignItems: "center",
                 gap: "0.5rem",
-                background: "rgba(255, 255, 255, 0.03)",
+                background: "rgba(0, 0, 0, 0.03)",
                 border: "1px solid var(--border-card)",
                 padding: "0.4rem 0.8rem",
                 borderRadius: "20px",
@@ -149,7 +131,6 @@ export default function ClientDashboard() {
               className="btn btn-secondary"
               style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", borderRadius: "20px", gap: "0.4rem" }}
             >
-              <LogOut size={14} />
               <span>Disconnect</span>
             </button>
           </div>
@@ -176,7 +157,6 @@ export default function ClientDashboard() {
         >
           <div className="glass-card">
             <div style={{ color: "var(--color-pending)", marginBottom: "0.75rem" }}>
-              <Clock size={24} />
             </div>
             <p style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-muted)" }}>
               Outstanding Balance Due
@@ -191,7 +171,6 @@ export default function ClientDashboard() {
 
           <div className="glass-card">
             <div style={{ color: "var(--color-success)", marginBottom: "0.75rem" }}>
-              <DollarSign size={24} />
             </div>
             <p style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-muted)" }}>
               Total Fees Settled
@@ -213,14 +192,10 @@ export default function ClientDashboard() {
               background: "var(--color-danger-bg)",
               border: "1px solid var(--color-danger-border)",
               borderRadius: "8px",
-              color: "#f87171",
+              color: "var(--color-danger)",
               marginBottom: "1.5rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
             }}
           >
-            <AlertTriangle size={20} />
             <span>{error}</span>
           </div>
         )}
@@ -243,7 +218,7 @@ export default function ClientDashboard() {
               display: "flex",
               alignItems: "center",
               gap: "0.75rem",
-              background: "rgba(0, 0, 0, 0.2)",
+              background: "#ffffff",
               border: "1px solid var(--border-card)",
               borderRadius: "8px",
               padding: "0.4rem 0.8rem",
@@ -252,7 +227,7 @@ export default function ClientDashboard() {
               maxWidth: "360px",
             }}
           >
-            <Search size={18} style={{ color: "var(--text-muted)" }} />
+
             <input
               type="text"
               placeholder="Search by invoice ID or item..."
@@ -279,9 +254,9 @@ export default function ClientDashboard() {
                   padding: "0.4rem 1rem",
                   fontSize: "0.85rem",
                   borderRadius: "6px",
-                  boxShadow: statusFilter === filter ? "0 2px 8px var(--color-primary-glow)" : "none",
-                  border: statusFilter === filter ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
-                  background: statusFilter === filter ? "#10b981" : "#27272a",
+                  boxShadow: "none",
+                  border: statusFilter === filter ? "none" : "1px solid var(--border-card)",
+                  background: statusFilter === filter ? "var(--color-success)" : "#f1f5f9",
                 }}
               >
                 {filter}
@@ -293,7 +268,6 @@ export default function ClientDashboard() {
         {/* Invoices List */}
         {loading ? (
           <div style={{ textAlign: "center", padding: "4rem 0" }}>
-            <Loader className="animate-spin text-primary" size={32} style={{ margin: "0 auto 1rem auto" }} />
             <p>Loading secure billing ledger...</p>
           </div>
         ) : filteredInvoices.length === 0 ? (
@@ -306,7 +280,7 @@ export default function ClientDashboard() {
               borderColor: "var(--border-card)",
             }}
           >
-            <Building size={40} style={{ color: "var(--text-muted)", marginBottom: "1rem", opacity: 0.5 }} />
+
             <h3>No invoices listed</h3>
             <p style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
               Your account does not have any invoices under this category.
@@ -365,12 +339,11 @@ export default function ClientDashboard() {
                           fontSize: "0.8rem",
                           borderRadius: "6px",
                           gap: "0.3rem",
-                          borderColor: inv.status !== "Paid" ? "rgba(16, 185, 129, 0.2)" : "rgba(255, 255, 255, 0.05)",
+                          borderColor: inv.status !== "Paid" ? "var(--color-success-border)" : "var(--border-card)",
                           color: inv.status !== "Paid" ? "#10b981" : "var(--text-primary)",
                         }}
                       >
                         <span>{inv.status === "Paid" ? "View Receipt" : "Review & Pay"}</span>
-                        <ArrowRight size={12} />
                       </button>
                     </td>
                   </tr>

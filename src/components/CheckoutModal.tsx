@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CreditCard, Lock, Loader, AlertTriangle, CheckCircle } from "./Icons";
+
 
 interface CheckoutModalProps {
   invoiceId: string;
@@ -158,10 +158,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           maxWidth: "460px",
           width: "100%",
           padding: "2.5rem",
-          background: "#0d0d12",
-          borderColor: success ? "rgba(16, 185, 129, 0.3)" : "rgba(124, 58, 237, 0.2)",
+          borderColor: success ? "var(--color-success)" : "var(--border-card)",
           position: "relative",
-          boxShadow: success ? "0 0 40px rgba(16, 185, 129, 0.1)" : "0 10px 40px rgba(0,0,0,0.5)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
@@ -189,15 +187,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               background: "var(--color-danger-bg)",
               border: "1px solid var(--color-danger-border)",
               borderRadius: "8px",
-              color: "#f87171",
+              color: "var(--color-danger)",
               fontSize: "0.85rem",
               marginBottom: "1.25rem",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
             }}
           >
-            <AlertTriangle size={16} />
             <span>{error}</span>
           </div>
         )}
@@ -214,7 +208,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             }}
           >
             <div style={{ color: "#10b981" }}>
-              <CheckCircle size={48} />
             </div>
             <h3 style={{ color: "#10b981" }}>Transaction Confirmed</h3>
             <p style={{ fontSize: "0.9rem" }}>
@@ -225,7 +218,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <form onSubmit={handleSubmit} className="stripe-form-container">
             <div
               style={{
-                background: "rgba(255, 255, 255, 0.02)",
+                background: "rgba(0, 0, 0, 0.02)",
                 border: "1px solid var(--border-card)",
                 padding: "1rem",
                 borderRadius: "8px",
@@ -248,7 +241,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Card Number</label>
               <div className="stripe-input-wrapper">
-                <CreditCard size={18} style={{ color: "var(--text-muted)" }} />
                 <input
                   type="text"
                   className="stripe-input"
@@ -303,19 +295,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             {isProcessing && (
               <div
                 style={{
-                  background: "rgba(124, 58, 237, 0.05)",
-                  border: "1px solid rgba(124, 58, 237, 0.2)",
+                  background: "var(--color-primary-glow)",
+                  border: "1px solid var(--border-card)",
                   borderRadius: "8px",
                   padding: "0.8rem 1rem",
                   fontSize: "0.8rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                  color: "#a78bfa",
+                  color: "var(--color-primary)",
                   marginBottom: "0.5rem",
                 }}
               >
-                <Loader className="animate-spin" size={16} />
                 <span>{statusMessage}</span>
               </div>
             )}
@@ -327,15 +315,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               style={{ width: "100%", height: "48px", gap: "0.5rem" }}
             >
               {isProcessing ? (
-                <>
-                  <Loader className="animate-spin" size={16} />
-                  <span>Settling transaction... DO NOT REFRESH</span>
-                </>
+                <span>Settling transaction... DO NOT REFRESH</span>
               ) : (
-                <>
-                  <Lock size={16} />
-                  <span>Submit Payment for ${amount.toLocaleString()}</span>
-                </>
+                <span>Submit Payment for ${amount.toLocaleString()}</span>
               )}
             </button>
 

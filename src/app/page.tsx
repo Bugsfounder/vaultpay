@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Lock, Shield, Loader, AlertTriangle } from "@/components/Icons";
+
 
 export default function LoginPage() {
   const { login, user } = useAuth();
@@ -89,22 +89,6 @@ export default function LoginPage() {
     <div className="login-wrapper">
       <div className="login-card">
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "48px",
-              height: "48px",
-              borderRadius: "12px",
-              background: "rgba(124, 58, 237, 0.1)",
-              border: "1px solid rgba(124, 58, 237, 0.2)",
-              color: "#8b5cf6",
-              marginBottom: "1rem",
-            }}
-          >
-            <Shield size={24} />
-          </div>
           <h2>VaultPay Financial Core</h2>
           <p style={{ fontSize: "0.9rem", marginTop: "0.25rem" }}>
             Nexus Corporate Services Gateway
@@ -114,19 +98,15 @@ export default function LoginPage() {
         {error && (
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.75rem",
               padding: "1rem",
               background: "var(--color-danger-bg)",
               border: "1px solid var(--color-danger-border)",
               borderRadius: "8px",
-              color: "#f87171",
+              color: "var(--color-danger)",
               fontSize: "0.9rem",
               marginBottom: "1.5rem",
             }}
           >
-            <AlertTriangle size={18} style={{ flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
@@ -163,15 +143,9 @@ export default function LoginPage() {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <>
-                <Loader className="animate-spin" size={18} />
-                <span>Verifying Secure Handshake...</span>
-              </>
+              <span>Verifying Secure Handshake...</span>
             ) : (
-              <>
-                <Lock size={18} />
-                <span>Establish Session</span>
-              </>
+              <span>Establish Session</span>
             )}
           </button>
         </form>
@@ -204,10 +178,7 @@ export default function LoginPage() {
               className="btn btn-secondary"
               style={{ justifyContent: "space-between", fontSize: "0.85rem", padding: "0.6rem 1rem" }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <Shield size={14} style={{ color: "#8b5cf6" }} />
-                <span style={{ fontWeight: 600 }}>Evelyn Croft (Admin)</span>
-              </div>
+              <span style={{ fontWeight: 600 }}>Evelyn Croft (Admin)</span>
               <span style={{ color: "var(--text-muted)" }}>admin@nexus.com</span>
             </button>
 
@@ -217,10 +188,7 @@ export default function LoginPage() {
               className="btn btn-secondary"
               style={{ justifyContent: "space-between", fontSize: "0.85rem", padding: "0.6rem 1rem" }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <Lock size={14} style={{ color: "#10b981" }} />
-                <span>Acme Corp (Client)</span>
-              </div>
+              <span>Acme Corp (Client)</span>
               <span style={{ color: "var(--text-muted)" }}>billing@acme.com</span>
             </button>
 
@@ -230,10 +198,7 @@ export default function LoginPage() {
               className="btn btn-secondary"
               style={{ justifyContent: "space-between", fontSize: "0.85rem", padding: "0.6rem 1rem" }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <Lock size={14} style={{ color: "#3b82f6" }} />
-                <span>Globex Corp (Client)</span>
-              </div>
+              <span>Globex Corp (Client)</span>
               <span style={{ color: "var(--text-muted)" }}>billing@globex.com</span>
             </button>
           </div>

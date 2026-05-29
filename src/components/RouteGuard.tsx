@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Loader } from "./Icons";
+
 
 export const RouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -51,15 +51,20 @@ export const RouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }
     if (isInvoicePath && user.role === "client") {
       const invoiceId = pathname.split("/").pop();
       if (invoiceId) {
-        // Fetch invoice info to verify ownership
-        fetch(`/api/invoices?id=${invoiceId}`)
+        // Fetch invoice info to verify ownership with security headers
+        fetch(`/api/invoices?id=${invoiceId}`, {
+          headers: {
+            "x-user-role": user.role,
+            "x-user-email": user.email,
+          },
+        })
           .then((res) => {
-            if (res.status === 403 || res.status === 404) {
+            if (res.status === 401 || res.status === 403 || res.status === 404) {
               router.replace("/403");
               setAuthorized(false);
             } else {
               res.json().then((invoice) => {
-                if (invoice.clientName !== user.clientProfile?.name) {
+                if (invoice.clientEmail?.toLowerCase() !== user.email.toLowerCase()) {
                   router.replace("/403");
                   setAuthorized(false);
                 } else {
@@ -83,7 +88,6 @@ export const RouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }
     return (
       <div className="guard-loading-screen">
         <div className="guard-loading-card">
-          <Loader className="animate-spin text-primary" size={40} />
           <p className="guard-loading-text">Verifying Security Credentials...</p>
         </div>
       </div>
