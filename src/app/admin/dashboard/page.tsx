@@ -70,12 +70,15 @@ export default function AdminDashboard() {
       });
 
       const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+      const todayStr = new Date().toISOString().split("T")[0];
       allInvoices.forEach((inv) => {
         if (paidList.includes(inv.id)) {
           inv.status = "Paid";
           if (!inv.paidAt) {
             inv.paidAt = new Date().toISOString();
           }
+        } else if (inv.status === "Pending" && inv.dueDate < todayStr) {
+          inv.status = "Overdue";
         }
       });
 

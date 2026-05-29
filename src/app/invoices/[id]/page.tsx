@@ -62,11 +62,14 @@ export default function InvoiceDetailPage(props: Props) {
       if (data) {
         // Override status locally for stateless/Vercel environments
         const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+        const todayStr = new Date().toISOString().split("T")[0];
         if (paidList.includes(data.id)) {
           data.status = "Paid";
           if (!data.paidAt) {
             data.paidAt = new Date().toISOString();
           }
+        } else if (data.status === "Pending" && data.dueDate < todayStr) {
+          data.status = "Overdue";
         }
         setInvoice(data);
       }

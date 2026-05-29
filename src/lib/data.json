@@ -15,6 +15,82 @@
   ],
   "invoices": [
     {
+      "id": "INV-5492",
+      "clientName": "Acme Corporation",
+      "clientEmail": "billing@acme.com",
+      "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
+      "amount": 100,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-05-21",
+      "items": [
+        {
+          "description": "pipes bil",
+          "quantity": 1,
+          "rate": 100
+        }
+      ],
+      "status": "Overdue"
+    },
+    {
+      "id": "INV-3538",
+      "clientName": "Globex Corp",
+      "clientEmail": "billing@globex.com",
+      "clientAddress": "456 Innovation Blvd, Tech Center, San Francisco, CA 94107",
+      "amount": 100,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Compter Bills Of Staff ",
+          "quantity": 1,
+          "rate": 100
+        }
+      ],
+      "status": "Paid",
+      "paidAt": "2026-05-29T05:37:34.251Z",
+      "stripePaymentIntentId": "pi_mock_35wd6g39yzt"
+    },
+    {
+      "id": "INV-7246",
+      "clientName": "Globex Corp",
+      "clientEmail": "billing@globex.com",
+      "clientAddress": "456 Innovation Blvd, Tech Center, San Francisco, CA 94107",
+      "amount": 100,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Staff Computer Bill",
+          "quantity": 1,
+          "rate": 100
+        }
+      ],
+      "status": "Paid",
+      "paidAt": "2026-05-29T05:35:00.317Z",
+      "stripePaymentIntentId": "pi_mock_73fq0nwj28u"
+    },
+    {
+      "id": "INV-4844",
+      "clientName": "Globex Corp",
+      "clientEmail": "billing@globex.com",
+      "clientAddress": "456 Innovation Blvd, Tech Center, San Francisco, CA 94107",
+      "amount": 100,
+      "currency": "USD",
+      "issueDate": "2026-05-29",
+      "dueDate": "2026-06-28",
+      "items": [
+        {
+          "description": "Piples Bill",
+          "quantity": 1,
+          "rate": 100
+        }
+      ],
+      "status": "Pending"
+    },
+    {
       "id": "INV-3701",
       "clientName": "Acme Corporation",
       "clientEmail": "billing@acme.com",
@@ -113,7 +189,7 @@
       "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
       "amount": 15000,
       "currency": "USD",
-      "status": "Pending",
+      "status": "Paid",
       "issueDate": "2026-05-15",
       "dueDate": "2026-06-15",
       "items": [
@@ -122,7 +198,9 @@
           "quantity": 1,
           "rate": 15000
         }
-      ]
+      ],
+      "paidAt": "2026-05-29T05:31:30.335Z",
+      "stripePaymentIntentId": "pi_mock_v2jz71ookc"
     },
     {
       "id": "INV-4412",
@@ -156,7 +234,7 @@
       "clientAddress": "123 Industrial Way, Suite A, New York, NY 10001",
       "amount": 5200,
       "currency": "USD",
-      "status": "Overdue",
+      "status": "Paid",
       "issueDate": "2026-04-10",
       "dueDate": "2026-05-10",
       "items": [
@@ -165,7 +243,9 @@
           "quantity": 1,
           "rate": 5200
         }
-      ]
+      ],
+      "paidAt": "2026-05-29T05:30:38.402Z",
+      "stripePaymentIntentId": "pi_mock_cr3x7jy8ln"
     }
   ]
 }

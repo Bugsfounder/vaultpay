@@ -32,7 +32,7 @@ export default function ClientDashboard() {
 
       if (!res.ok) throw new Error("Failed to fetch client invoices");
       const data: Invoice[] = await res.json();
-      
+
       // Local persistence overrides for stateless environments (e.g. Vercel)
       const createdList: Invoice[] = JSON.parse(localStorage.getItem("vaultpay_created_invoices") || "[]");
       const clientCreated = createdList.filter(inv => inv.clientEmail.toLowerCase() === user.email.toLowerCase());
@@ -46,12 +46,15 @@ export default function ClientDashboard() {
       });
 
       const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+      const todayStr = new Date().toISOString().split("T")[0];
       allInvoices.forEach((inv) => {
         if (paidList.includes(inv.id)) {
           inv.status = "Paid";
           if (!inv.paidAt) {
             inv.paidAt = new Date().toISOString();
           }
+        } else if (inv.status === "Pending" && inv.dueDate < todayStr) {
+          inv.status = "Overdue";
         }
       });
 
@@ -82,7 +85,7 @@ export default function ClientDashboard() {
 
   // Filters & Search
   const filteredInvoices = invoices.filter((inv) => {
-    const matchesSearch = 
+    const matchesSearch =
       inv.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       inv.items.some((item) => item.description.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -116,8 +119,8 @@ export default function ClientDashboard() {
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <div>
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 600 }}>Nexus VaultPay</h2>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.05em" }}>
+              <h2 style={{ fontSize: "1.1rem", fontWeight: 600, color: "white" }}>Nexus VaultPay</h2>
+              <span style={{ fontSize: "0.75rem", letterSpacing: "0.05em", color: "white" }}>
                 SECURED CLIENT PORTAL
               </span>
             </div>
@@ -342,13 +345,12 @@ export default function ClientDashboard() {
                     </td>
                     <td>
                       <span
-                        className={`badge ${
-                          inv.status === "Paid"
-                            ? "badge-paid"
-                            : inv.status === "Pending"
+                        className={`badge ${inv.status === "Paid"
+                          ? "badge-paid"
+                          : inv.status === "Pending"
                             ? "badge-pending"
                             : "badge-overdue"
-                        }`}
+                          }`}
                       >
                         {inv.status}
                       </span>

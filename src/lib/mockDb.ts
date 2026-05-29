@@ -159,9 +159,11 @@ export function getClients(): ClientProfile[] {
 
 export function createInvoice(invoice: Omit<Invoice, "status" | "paidAt" | "stripePaymentIntentId">): Invoice {
   const data = getDbData();
+  const todayStr = new Date().toISOString().split("T")[0];
+  const isOverdue = invoice.dueDate && invoice.dueDate < todayStr;
   const newInvoice: Invoice = {
     ...invoice,
-    status: "Pending",
+    status: isOverdue ? "Overdue" : "Pending",
   };
   data.invoices.unshift(newInvoice); // Add to beginning
   saveDbData(data);
