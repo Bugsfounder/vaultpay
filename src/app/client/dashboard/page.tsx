@@ -31,8 +31,31 @@ export default function ClientDashboard() {
       });
 
       if (!res.ok) throw new Error("Failed to fetch client invoices");
-      const data = await res.json();
-      setInvoices(data);
+      const data: Invoice[] = await res.json();
+      
+      // Local persistence overrides for stateless environments (e.g. Vercel)
+      const createdList: Invoice[] = JSON.parse(localStorage.getItem("vaultpay_created_invoices") || "[]");
+      const clientCreated = createdList.filter(inv => inv.clientEmail.toLowerCase() === user.email.toLowerCase());
+
+      // Combine lists, avoiding duplicates
+      const allInvoices = [...data];
+      clientCreated.forEach((cInv) => {
+        if (!allInvoices.some((inv) => inv.id === cInv.id)) {
+          allInvoices.unshift(cInv);
+        }
+      });
+
+      const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+      allInvoices.forEach((inv) => {
+        if (paidList.includes(inv.id)) {
+          inv.status = "Paid";
+          if (!inv.paidAt) {
+            inv.paidAt = new Date().toISOString();
+          }
+        }
+      });
+
+      setInvoices(allInvoices);
     } catch (err: any) {
       setError(err.message || "An error occurred while loading your billing details.");
     } finally {

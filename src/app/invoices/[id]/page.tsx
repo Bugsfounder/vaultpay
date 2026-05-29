@@ -41,16 +41,35 @@ export default function InvoiceDetailPage(props: Props) {
         },
       });
 
+      let data: Invoice | null = null;
       if (!res.ok) {
         if (res.status === 403) {
           router.replace("/403");
           return;
         }
-        throw new Error("Failed to load invoice details");
+        // Try fallback to local storage for newly created invoices on stateless servers
+        const createdList: Invoice[] = JSON.parse(localStorage.getItem("vaultpay_created_invoices") || "[]");
+        const localInv = createdList.find(inv => inv.id === id);
+        if (localInv) {
+          data = localInv;
+        } else {
+          throw new Error("Failed to load invoice details");
+        }
+      } else {
+        data = await res.json();
       }
 
-      const data = await res.json();
-      setInvoice(data);
+      if (data) {
+        // Override status locally for stateless/Vercel environments
+        const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+        if (paidList.includes(data.id)) {
+          data.status = "Paid";
+          if (!data.paidAt) {
+            data.paidAt = new Date().toISOString();
+          }
+        }
+        setInvoice(data);
+      }
     } catch (err: any) {
       setError(err.message || "Failed to load invoice records.");
     } finally {
@@ -69,6 +88,14 @@ export default function InvoiceDetailPage(props: Props) {
   const handlePaymentSuccess = () => {
     setIsCheckoutOpen(false);
     setShowConfetti(true);
+
+    // Save paid invoice ID to localStorage
+    const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+    if (!paidList.includes(id)) {
+      paidList.push(id);
+      localStorage.setItem("vaultpay_paid_invoices", JSON.stringify(paidList));
+    }
+
     // Refresh invoice details
     fetchInvoice();
   };

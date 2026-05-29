@@ -58,8 +58,28 @@ export default function AdminDashboard() {
         },
       });
       if (!invRes.ok) throw new Error("Failed to fetch invoices");
-      const invData = await invRes.json();
-      setInvoices(invData);
+      const invData: Invoice[] = await invRes.json();
+
+      // Local persistence overrides for stateless environments (e.g. Vercel)
+      const createdList: Invoice[] = JSON.parse(localStorage.getItem("vaultpay_created_invoices") || "[]");
+      const allInvoices = [...invData];
+      createdList.forEach((cInv) => {
+        if (!allInvoices.some((inv) => inv.id === cInv.id)) {
+          allInvoices.unshift(cInv);
+        }
+      });
+
+      const paidList: string[] = JSON.parse(localStorage.getItem("vaultpay_paid_invoices") || "[]");
+      allInvoices.forEach((inv) => {
+        if (paidList.includes(inv.id)) {
+          inv.status = "Paid";
+          if (!inv.paidAt) {
+            inv.paidAt = new Date().toISOString();
+          }
+        }
+      });
+
+      setInvoices(allInvoices);
 
       // Pre-seed clients from a quick client fetch or mock details
       setClients([
@@ -183,6 +203,13 @@ export default function AdminDashboard() {
         const errorData = await res.json();
         throw new Error(errorData.error || "Failed to generate invoice");
       }
+
+      const newInvoice = await res.json();
+
+      // Save newly created invoice to localStorage for stateless/Vercel persistence
+      const createdList = JSON.parse(localStorage.getItem("vaultpay_created_invoices") || "[]");
+      createdList.push(newInvoice);
+      localStorage.setItem("vaultpay_created_invoices", JSON.stringify(createdList));
 
       // Refresh invoices
       await fetchDashboardData();
